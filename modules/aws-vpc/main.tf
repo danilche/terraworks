@@ -38,10 +38,10 @@ resource "aws_route_table" "public_route_tables" {
 }
 
 resource "aws_subnet" "public_subnets" {
-  count = "${local.env_vars.locals.environment}" == "prod" ? length(var.public_subnets) : 1
+  count = length(var.public_subnets)
   vpc_id = aws_vpc.vpc.id
-  cidr_block = "${local.env_vars.locals.environment}" == "prod" ? var.public_subnets[count.index] : var.public_subnets[0]
-  availability_zone = "${local.env_vars.locals.environment}" == "prod" ? var.azs[count.index] : var.azs[0]
+  cidr_block = var.public_subnets[count.index]
+  availability_zone = var.azs[count.index]
   map_public_ip_on_launch = true
   tags = {
     Name = "${var.vpc_name}-PSN"
